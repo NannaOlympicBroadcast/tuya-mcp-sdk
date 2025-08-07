@@ -1,0 +1,65 @@
+@startuml
+title 架构图
+
+top to bottom direction
+
+skinparam packageStyle rectangle
+skinparam component {
+    BackgroundColor lightblue
+    BorderColor black
+}
+skinparam actor {
+    BackgroundColor lightgreen
+    BorderColor black
+}
+
+skinparam entity {
+    BackgroundColor lightyellow
+    BorderColor black
+}
+
+actor "开发者" as developer
+
+package "开发者环境" as developerEnv {
+    component "自定义MCP服务" as CustomMCP
+    component "涂鸦MCP SDK" as TuyaMCPSDK 
+    entity "设备" as TuyaDevice
+}
+developer --> CustomMCP
+
+CustomMCP -[hidden]down-> TuyaMCPSDK
+TuyaMCPSDK -[hidden]left-> TuyaDevice
+
+CustomMCP <--> TuyaMCPSDK : 标准MCP协议
+
+package "涂鸦云" as tuya {
+    package "MCP网关" as TuyaMCPGateway {
+        component "MCP SDK Endpoint" as TuyaCustomMCPEndpoint
+    }
+
+    component "产品" as TuyaProduct
+
+    package "智能体" as TuyaAgent {
+        component "MCP客户端" as TuyaMCPClient
+    }
+
+
+}
+
+TuyaMCPGateway -[hidden]down-> TuyaAgent
+TuyaAgent -[hidden]left-> TuyaProduct
+
+developerEnv -[hidden]down-> tuya
+
+TuyaMCPSDK <-right-> TuyaCustomMCPEndpoint : SDK 转发请求 (WSS)
+
+
+TuyaProduct -up..> TuyaDevice : 赋能AI能力 
+
+TuyaAgent ..> TuyaProduct : 赋能AI能力
+
+TuyaDevice --> TuyaAgent : AI Agent 调用
+TuyaMCPClient --> TuyaCustomMCPEndpoint : Call (MCP)
+
+
+@enduml

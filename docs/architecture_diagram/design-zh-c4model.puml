@@ -1,0 +1,42 @@
+@startuml
+!include  https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title Architecture Diagram
+
+AddRelTag("dependency", $textColor="$ARROW_FONT_COLOR", $lineColor="$ARROW_COLOR", $sprite="firewall,scale=0.3,color=red" , $lineStyle = DashedLine())
+
+' LAYOUT_AS_SKETCH()
+
+Person(developer, "开发者"){
+    System_Ext(TuyaDevice, "设备", "涂鸦云")
+
+    System(CustomMCP, "自定义MCP服务", "")
+    System(TuyaMCP, "涂鸦MCP SDK", "")
+}
+
+
+System_Boundary(tuya, "涂鸦云"){
+    System(TuyaAgent, "智能体", "涂鸦云提供") {
+        Container(TuyaMCPClient, "MCP客户端", "MCP")
+    }
+    System(TuyaProduct, "产品", "智能体")
+    System(TuyaMCPGateway, "MCP网关", "") {
+        Container_Boundary(TuyaMCPGatewayBoundary, "", "") {
+            Container(TuyaCustomMCPEndpoint, "MCP SDK Endpoint", "HTTP") 
+        }
+    }
+}
+
+BiRel_D(CustomMCP, TuyaMCP, "标准MCP协议","MCP")
+
+
+Rel_U(TuyaProduct, TuyaDevice, "赋能AI", "", $tags="dependency")
+Rel_R(TuyaAgent, TuyaProduct, "赋能AI", "", $tags="dependency")
+
+Rel_D(TuyaDevice, TuyaAgent, "AI Agent 调用")
+Rel_L(TuyaMCPClient, TuyaCustomMCPEndpoint, "Call", "MCP")
+
+
+BiRel_D(TuyaMCP, TuyaCustomMCPEndpoint, "SDK 转发请求", "WSS")
+
+@enduml

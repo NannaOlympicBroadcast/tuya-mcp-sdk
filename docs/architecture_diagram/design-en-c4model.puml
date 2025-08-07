@@ -1,0 +1,42 @@
+@startuml
+!include  https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title Architecture Diagram
+
+AddRelTag("dependency", $textColor="$ARROW_FONT_COLOR", $lineColor="$ARROW_COLOR", $sprite="firewall,scale=0.3,color=red" , $lineStyle = DashedLine())
+
+' LAYOUT_AS_SKETCH()
+
+Person(developer, "Developer"){
+    System_Ext(TuyaDevice, "Device", "By Tuya Cloud")
+
+    System(CustomMCP, "Custom MCP Server", "")
+    System(TuyaMCP, "Tuya MCP SDK", "")
+}
+
+
+System_Boundary(tuya, "Tuya Cloud"){
+    System(TuyaAgent, "Agent", "By Tuya Cloud") {
+        Container(TuyaMCPClient, "MCP Client", "MCP")
+    }
+    System(TuyaProduct, "Product", "Agent")
+    System(TuyaMCPGateway, "MCP Gateway", "") {
+        Container_Boundary(TuyaMCPGatewayBoundary, "", "") {
+            Container(TuyaCustomMCPEndpoint, "MCP SDK Endpoint") 
+        }
+    }
+}
+
+BiRel_D(CustomMCP, TuyaMCP, "Standard MCP Protocol","MCP")
+
+
+Rel_U(TuyaProduct, TuyaDevice, "Instantiation", "", $tags="dependency")
+Rel_R(TuyaAgent, TuyaProduct, "Enable AI", "", $tags="dependency")
+
+Rel_D(TuyaDevice, TuyaAgent, "AI Agent Call")
+Rel_L(TuyaMCPClient, TuyaCustomMCPEndpoint, "Call", "MCP")
+
+
+BiRel_D(TuyaMCP, TuyaCustomMCPEndpoint, "SDK Forward Request", "WSS")
+
+@enduml

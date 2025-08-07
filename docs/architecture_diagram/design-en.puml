@@ -1,0 +1,65 @@
+@startuml
+title Architecture Diagram
+
+top to bottom direction
+
+skinparam packageStyle rectangle
+skinparam component {
+    BackgroundColor lightblue
+    BorderColor black
+}
+skinparam actor {
+    BackgroundColor lightgreen
+    BorderColor black
+}
+
+skinparam entity {
+    BackgroundColor lightyellow
+    BorderColor black
+}
+
+actor "Developer" as developer
+
+package "Developer Environment" as developerEnv {
+    component "Custom MCP Service" as CustomMCP
+    component "Tuya MCP SDK" as TuyaMCPSDK 
+    entity "Device" as TuyaDevice
+}
+developer --> CustomMCP
+
+CustomMCP -[hidden]down-> TuyaMCPSDK
+TuyaMCPSDK -[hidden]left-> TuyaDevice
+
+CustomMCP <--> TuyaMCPSDK : Standard MCP Protocol
+
+package "Tuya Cloud" as tuya {
+    package "MCP Gateway" as TuyaMCPGateway {
+        component "MCP SDK Endpoint" as TuyaCustomMCPEndpoint
+    }
+
+    component "Product" as TuyaProduct
+
+    package "Agent" as TuyaAgent {
+        component "MCP Client" as TuyaMCPClient
+    }
+
+
+}
+
+TuyaMCPGateway -[hidden]down-> TuyaAgent
+TuyaAgent -[hidden]left-> TuyaProduct
+
+developerEnv -[hidden]down-> tuya
+
+TuyaMCPSDK <-right-> TuyaCustomMCPEndpoint : SDK Forward Request (WSS)
+
+
+TuyaProduct -up..> TuyaDevice : AI Empowerment 
+
+TuyaAgent ..> TuyaProduct : AI Empowerment
+
+TuyaDevice --> TuyaAgent : AI Agent Call
+TuyaMCPClient --> TuyaCustomMCPEndpoint : Call (MCP)
+
+
+@enduml

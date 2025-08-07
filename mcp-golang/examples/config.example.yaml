@@ -1,0 +1,4 @@
+access_id: ${access_id}
+access_secret: ${access_secret}
+endpoint: ${endpoint}
+custom_mcp_server_endpoint: ${custom_mcp_server_endpoint}
