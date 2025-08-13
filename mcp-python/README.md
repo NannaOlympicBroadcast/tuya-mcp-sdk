@@ -14,7 +14,7 @@ mcpsdk = await create_mcpsdk(
     # Set custom MCP server endpoint
     custom_mcp_server_endpoint="http://localhost:8765/mcp",
     # Set Access ID, Access secret and Endpoint
-    endpoint="your-gateway-endpoint",
+    endpoint="your-endpoint",
     access_id="your-access-id", 
     access_secret="your-access-secret"
 )
@@ -51,7 +51,7 @@ if __name__ == "__main__":
 
 ## 2. Quick Start 
 **Prerequisites:**
-> - The machine has Python 3.10+ environment for Python development.
+> - The machine has Python 3.10+ environment for Python development and pip >= 21.3.
 > - Install imagesnap (optional, required for demonstrating computer photography control)
 
 - Checkout source code
@@ -65,19 +65,20 @@ if __name__ == "__main__":
     ```shell
     # Create virtual environment
     python -m venv .venv
+    # or python3 -m venv .venv
     source .venv/bin/activate  # Linux/Mac
 
     # Install development dependencies
     pip install -e ".[dev]"
 
     # Run with custom parameters
-    python -m examples all --endpoint your-endpoint --access-id your-access-id --access-secret your-access-secret --custom_mcp_server_endpoint 'http://localhost:8765/mcp'
+    python -m examples all --endpoint your-endpoint --access-id your-access-id --access-secret your-access-secret --custom-mcp-server-endpoint 'http://localhost:8765/mcp'
     ```
   - Parameter Description
     > - endpoint: Tuya developer platform MCP endpoint
-    > - access_id: Tuya developer platform MCP access id
-    > - access_secret: Tuya developer platform MCP access secret
-    > - custom_mcp_server_endpoint: Address of custom MCP Server Endpoint declared in SDK; current demo includes an MCP Server example `http://localhost:8765/mcp`
+    > - access-id: Tuya developer platform MCP access id
+    > - access-secret: Tuya developer platform MCP access secret
+    > - custom-mcp-server-endpoint: Address of custom MCP Server Endpoint declared in SDK; current demo includes an MCP Server example `http://localhost:8765/mcp`
 
 ## 3. Develop Custom MCP Server
 > Developers develop custom MCP Servers based on business to provide capabilities for their devices.
