@@ -12,13 +12,16 @@ class AuthConfig(BaseModel):
     access_id: str = Field(..., description="Developer access ID")
     access_secret: str = Field(..., description="Developer access secret")
 
+
 class TokenResponse(BaseModel):
     """Token Response"""
     success: bool = Field(..., description="Whether request succeeded")
     msg: Optional[str] = Field(None, description="Request response message")
     data: Optional["TokenData"] = Field(None, description="Response data body")
-    error_code: Optional[str] = Field(None, description="Error code when success is false")
-    error_msg: Optional[str] = Field(None, description="Error message when success is false")
+    error_code: Optional[str] = Field(
+        None, description="Error code when success is false")
+    error_msg: Optional[str] = Field(
+        None, description="Error message when success is false")
 
 
 class TokenData(BaseModel):
@@ -30,12 +33,14 @@ class TokenData(BaseModel):
 class MCPSdkRequest(BaseModel):
     """MCPSdk Request Format"""
     request_id: str = Field(..., description="Request ID")
-    endpoint: str = Field("", description="Endpoint, empty string or streamable")
+    endpoint: str = Field(
+        "", description="Endpoint, empty string or streamable")
     version: str = Field("v1", description="Version number")
     method: str = Field(..., description="Method name, e.g., tools/call")
     ts: str = Field(..., description="Timestamp")
     request: str = Field(..., description="Request data as JSON string")
-    sign: Optional[str] = Field(None, description="Message signature, not included in signing")
+    sign: Optional[str] = Field(
+        None, description="Message signature, not included in signing")
 
 
 class MCPSdkResponse(BaseModel):
@@ -43,10 +48,12 @@ class MCPSdkResponse(BaseModel):
     request_id: str = Field(..., description="Request ID")
     endpoint: str = Field("", description="Endpoint, empty string or URL")
     version: str = Field("v1", description="Version number")
-    method: Optional[str] = Field(None, description="Method name, e.g., tools/call")
+    method: Optional[str] = Field(
+        None, description="Method name, e.g., tools/call")
     ts: Optional[str] = Field(None, description="Timestamp")
     response: str = Field(..., description="Response data as JSON string")
-    sign: Optional[str] = Field(None, description="Message signature, not included in signing")
+    sign: Optional[str] = Field(
+        None, description="Message signature, not included in signing")
 
 
 class SignatureHeaders(BaseModel):

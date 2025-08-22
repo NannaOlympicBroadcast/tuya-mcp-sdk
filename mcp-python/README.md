@@ -51,8 +51,7 @@ if __name__ == "__main__":
 
 ## 2. Quick Start 
 **Prerequisites:**
-> - The machine has Python 3.10+ environment for Python development and pip >= 21.3.
-> - Install imagesnap (optional, required for demonstrating computer photography control)
+> The machine has Python 3.10+ environment for Python development, and pip >= 21.3.
 
 - Checkout source code
     ```shell
@@ -64,21 +63,23 @@ if __name__ == "__main__":
 - Run SDK Example
     ```shell
     # Create virtual environment
-    python -m venv .venv
-    # or python3 -m venv .venv
+    python -m venv .venv 
+    # or `python3 -m venv .venv`
+    
+    # Activate virtual environment
     source .venv/bin/activate  # Linux/Mac
 
     # Install development dependencies
     pip install -e ".[dev]"
 
     # Run with custom parameters
-    python -m examples all --endpoint your-endpoint --access-id your-access-id --access-secret your-access-secret --custom-mcp-server-endpoint 'http://localhost:8765/mcp'
+    python -m examples all --endpoint your-endpoint --access-id your-access-id --access-secret your-access-secret --custom-mcp-server-endpoint http://localhost:8765/mcp
     ```
   - Parameter Description
-    > - endpoint: Tuya developer platform MCP endpoint
-    > - access-id: Tuya developer platform MCP access id
-    > - access-secret: Tuya developer platform MCP access secret
-    > - custom-mcp-server-endpoint: Address of custom MCP Server Endpoint declared in SDK; current demo includes an MCP Server example `http://localhost:8765/mcp`
+    - endpoint: Tuya developer platform MCP endpoint
+    - access-id: Tuya developer platform MCP access id
+    - access-secret: Tuya developer platform MCP access secret
+    - custom-mcp-server-endpoint: Address of custom MCP Server Endpoint declared in SDK; current demo includes an MCP Server example `http://localhost:8765/mcp`
 
 ## 3. Develop Custom MCP Server
 > Developers develop custom MCP Servers based on business to provide capabilities for their devices.

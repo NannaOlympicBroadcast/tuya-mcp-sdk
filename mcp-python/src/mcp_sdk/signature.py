@@ -4,12 +4,15 @@ Signature Utils Module
 
 import hmac
 import hashlib
+import logging
 import time
 import secrets
+import json
 from typing import Dict, Any
-from urllib.parse import quote
 
 from .exceptions import SignatureError
+
+logger = logging.getLogger(__name__)
 
 
 class SignatureUtils:
@@ -89,17 +92,17 @@ class SignatureUtils:
         # Step 5: Build stringToSign = access_id + "\n" + t + "\n" + sign_method + "\n" + nonce + "\n" + headerPathStr + "\n" + bodyByteStr
         string_to_sign = f"{access_id}\n{timestamp}\nHMAC-SHA256\n{nonce}\n{header_path_str}{body_byte_str}"
         
-        # Debug: Print signature components
-        print(f"[DEBUG] WebSocket Signature Components:")
-        print(f"  access_id: {access_id}")
-        print(f"  timestamp: {timestamp}")
-        print(f"  nonce: {nonce}")
-        print(f"  headers_str: '{headers_str}'")
-        print(f"  querys_str: '{querys_str}'")
-        print(f"  header_path_str: '{header_path_str}'")
-        print(f"  body_byte_str: '{body_byte_str}'")
-        print(f"  string_to_sign: '{string_to_sign}'")
-        print(f"  string_to_sign (repr): {repr(string_to_sign)}")
+        # Debug: Log signature components (only in DEBUG level to protect sensitive data)
+        logger.debug("WebSocket Signature Components:")
+        logger.debug("  access_id: %s", access_id)
+        logger.debug("  timestamp: %s", timestamp)
+        logger.debug("  nonce: %s", nonce)
+        logger.debug("  headers_str: '%s'", headers_str)
+        logger.debug("  querys_str: '%s'", querys_str)
+        logger.debug("  header_path_str: '%s'", header_path_str)
+        logger.debug("  body_byte_str: '%s'", body_byte_str)
+        logger.debug("  string_to_sign: '%s'", string_to_sign)
+        logger.debug("  string_to_sign (repr): %r", string_to_sign)
         
         # Step 6: Calculate HMAC-SHA256 signature and convert to uppercase
         signature = hmac.new(
@@ -108,7 +111,7 @@ class SignatureUtils:
             hashlib.sha256
         ).hexdigest().upper()
         
-        print(f"  calculated_signature: {signature}")
+        logger.debug("  calculated_signature: %s", signature)
         
         return signature
     
@@ -157,11 +160,11 @@ class SignatureUtils:
             )
             return hmac.compare_digest(received_signature.upper(), calculated_signature)
         except Exception as e:
-            raise SignatureError(f"Signature verification failed: {e}")
-    
+            raise SignatureError(f"signature verification failed: {e}") from e
+
     @staticmethod
     def create_websocket_headers(
-        access_id: str,
+        access_id: str, 
         access_secret: str,
         client_id: str,
         path: str = "/ws/mcp",
@@ -261,19 +264,19 @@ class SignatureUtils:
         # Step 5: Build stringToSign = access_id + "\n" + t + "\n" + sign_method + "\n" + nonce + "\n" + headerPathStr + "\n" + bodyByteStr
         string_to_sign = f"{access_id}\n{timestamp}\nHMAC-SHA256\n{nonce}\n{header_path_str}{body_byte_str}"
         
-        # Debug: Print signature components for HTTP auth
-        print(f"[DEBUG] HTTP Auth Signature Components:")
-        print(f"  access_id: {access_id}")
-        print(f"  timestamp: {timestamp}")
-        print(f"  nonce: {nonce}")
-        print(f"  uri: {uri}")
-        print(f"  body: '{body}'")
-        print(f"  headers_str: '{headers_str}'")
-        print(f"  querys_str: '{querys_str}'")
-        print(f"  header_path_str: '{header_path_str}'")
-        print(f"  body_byte_str: '{body_byte_str}'")
-        print(f"  string_to_sign: '{string_to_sign}'")
-        print(f"  string_to_sign (repr): {repr(string_to_sign)}")
+        # Debug: Log signature components for HTTP auth (only in DEBUG level to protect sensitive data)
+        logger.debug("HTTP Auth Signature Components:")
+        logger.debug("  access_id: %s", access_id)
+        logger.debug("  timestamp: %s", timestamp)
+        logger.debug("  nonce: %s", nonce)
+        logger.debug("  uri: %s", uri)
+        logger.debug("  body: '%s'", body)
+        logger.debug("  headers_str: '%s'", headers_str)
+        logger.debug("  querys_str: '%s'", querys_str)
+        logger.debug("  header_path_str: '%s'", header_path_str)
+        logger.debug("  body_byte_str: '%s'", body_byte_str)
+        logger.debug("  string_to_sign: '%s'", string_to_sign)
+        logger.debug("  string_to_sign (repr): %r", string_to_sign)
         
         # Step 6: Calculate HMAC-SHA256 signature and convert to uppercase
         signature = hmac.new(
@@ -282,7 +285,7 @@ class SignatureUtils:
             hashlib.sha256
         ).hexdigest().upper()
         
-        print(f"  calculated_signature: {signature}")
+        logger.debug("  calculated_signature: %s", signature)
         
         headers = {
             "access_id": access_id,
@@ -324,24 +327,23 @@ class SignatureUtils:
             value = filtered_data[key]
             # Convert value to string
             if isinstance(value, (dict, list)):
-                import json
+                
                 value_str = json.dumps(value, separators=(',', ':'), ensure_ascii=False)
             else:
                 value_str = str(value)
             
             # URL encode the value
-            # encoded_value = quote(value_str, safe='')
             params.append(f"{key}:{value_str}")
         
         # Join with \n
         query_string = "\n".join(params)
         
-        # Debug: Print message signature components
-        print(f"[DEBUG] Message Signature Components:")
-        print(f"  sorted_keys: {sorted_keys}")
-        print(f"  params: {params}")
-        print(f"  query_string: '{query_string}'")
-        print(f"  query_string (repr): {repr(query_string)}")
+        # Debug: Log message signature components (only in DEBUG level to protect sensitive data)
+        logger.debug("Message Signature Components:")
+        logger.debug("  sorted_keys: %s", sorted_keys)
+        logger.debug("  params: %s", params)
+        logger.debug("  query_string: '%s'", query_string)
+        logger.debug("  query_string (repr): %r", query_string)
         
         # Calculate HMAC-SHA256 signature and convert to uppercase
         signature = hmac.new(
@@ -350,7 +352,7 @@ class SignatureUtils:
             hashlib.sha256
         ).hexdigest().upper()
         
-        print(f"  calculated_signature: {signature}")
+        logger.debug("  calculated_signature: %s", signature)
         
         return signature
     
@@ -407,4 +409,4 @@ class SignatureUtils:
             # Compare signatures
             return hmac.compare_digest(received_signature.upper(), expected_signature)
         except Exception as e:
-            raise SignatureError(f"Message signature verification failed: {e}")
+            raise SignatureError(f"Message signature verification failed: {e}") from e

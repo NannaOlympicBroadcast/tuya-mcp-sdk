@@ -29,7 +29,7 @@ __version__ = "0.1.0"
 __all__ = [
     # Main interfaces
     "MCPSdk",
-    "MCPSdkConfig", 
+    "MCPSdkConfig",
     "MCPClientConfig",
     "create_mcpsdk",
     "run_mcpsdk",
@@ -37,7 +37,7 @@ __all__ = [
     "MCPSdkClient",
     # Exception classes
     "MCPSdkError",
-    "AuthenticationError", 
+    "AuthenticationError",
     "ConnectionError",
     "SignatureError",
     # Data models

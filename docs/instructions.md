@@ -1,48 +1,69 @@
-## Quick Start
+This topic describes how to create and configure a custom MCP server and debug it in an agent.
 
-## 1. Create a custom MCP Server
-### 1.1 Login Tuya Developer Platform **Home Page**
-- Navigation Bar Select **MCP Management**
+## Create custom MCP server
 
-    <img src="https://images.tuyacn.com/content-platform/hestia/1754479490a690fcb7d31.png" height="250"/>
-- Select **Custom MCP Service** and **Add custom MCP**
+1. Log in to the [Tuya Developer Platform](https://platform.tuya.com/).
 
-    <img src="https://images.tuyacn.com/content-platform/hestia/175447956201b88f7a5a1.png" height="250"/>
+2. Go to [**MCP Management**](https://platform.tuya.com/exp/ai/mcp) > **Custom MCP Service**, and click **Add custom MCP**.
 
-### 1.2. Settings Custom MCP Service
-- Add data center for custom MCP
+   ![Add MCP](https://images.tuyacn.com/content-platform/hestia/17552251294ef4fcc8a0a.png)
 
-    <img src="https://images.tuyacn.com/content-platform/hestia/175447967322a3f1ca783.png" height="250"/>
-- View and record connection params
-    > MCP SDK need `Endpoint`, `Access ID`,  `Access Secret`.
+3. In the **Sign up MCP Server** dialog, enter the service name and description in Chinese and English, upload an image as the icon, and then click **Confirm** to save.
 
-    <img src="https://images.tuyacn.com/content-platform/hestia/1754479844874b94cb4a7.png" height="250"/>
+   <img alt="Sign up MCP server" src="https://images.tuyacn.com/content-platform/hestia/17552253115b7d3028283.png" width="350" >
 
-## 2. Access custom MCP Server based on SDK
-### 2.1. Download MCP SDK
-- Source Code on [Github](https://github.com/tuya/tuya-mcp-sdk.git)
 
-## 3. Run and Debug your MCP Server In AI Agent
-### 3.1. Run MCP SDK
-- Check the custom MCP server status
+## Configure custom MCP server
+:::info
+If your custom MCP service is deployed across multiple data centers, ensure consistent service versions and tool configurations in all data centers to prevent compatibility issues that may disrupt agent orchestration or cause functional failures.
+:::
+1. After creating the MCP server, you will automatically be redirected to its **Service Details** page.
+2. In the section of **Service Access Configuration Management** > **Data Center**, click **Add Data Center** on the right, select a data center as needed, and then click **OK**.
 
-    <img src="https://images.tuyacn.com/content-platform/hestia/1754480133d1e89fe8357.png" height="250"/>
-- View your custom MCP tools list
+   ![Service details](https://images.tuyacn.com/content-platform/hestia/1755225536581a0ae9478.png)
 
-    <img src="https://images.tuyacn.com/content-platform/hestia/1754480275aaa496cdafd.png" height="250"/>
-- Next, you can test your tools, ensure its can work well
+3. Click the selected data center, and you can see the **Endpoint**, **Access ID**, and **Access Secret**. Copy and paste the information to your local device. Please note that these parameters will be used when running the MCP SDK later. For more information, see the **README** in the [GitHub source code](https://github.com/tuya/tuya-mcp-sdk.git).
 
-    <img src="https://images.tuyacn.com/content-platform/hestia/1754480486b0592694f32.png" height="250"/>
-- Well, the tool was called successful
+   ![Data center](https://images.tuyacn.com/content-platform/hestia/175522559927d1caf4f12.png)
 
-    <img src="https://images.tuyacn.com/content-platform/hestia/175448037262132efc2d5.png" height="250"/>
+## Access MCP server via SDK
 
-### 3.2. Add Custom MCP Tools to Agent
-- Open your agent page and develop it
+Download the MCP SDK from [GitHub](https://github.com/tuya/tuya-mcp-sdk.git) and read the relevant documents.
 
-    <img src="https://images.tuyacn.com/content-platform/hestia/17544806720f313d413bc.png" height="250"/>
-- Add MCP service
+![Download](https://images.tuyacn.com/content-platform/hestia/1755154107774314342c7.png)
 
-    <img src="https://images.tuyacn.com/content-platform/hestia/17544806190570be00467.png" height="250"/>
+## Run and debug MCP Server
 
-Great! Now, we have experienced the entire process of developing a custom MCP server.
+To ensure your custom MCP server operates properly, follow these steps to run and debug it within the agent environment:
+
+### Run and debug
+
+1. In the selected data center, check the service status of the MCP server.
+
+   ![Service status](https://images.tuyacn.com/content-platform/hestia/1755225694a9430fec3a3.png)
+
+2. On the **Tool** tab, view the available tools for your MCP server.
+
+   ![Available tools](https://images.tuyacn.com/content-platform/hestia/17552257539b261737630.png)
+
+3. Click **Test Run** to test your desired tool.
+
+   <img alt="Test run" src="https://images.tuyacn.com/content-platform/hestia/1755225801672df842cdd.png" width="" >
+
+4. In the **Test Run** window, click **Run**. When **Commissioning passed** appear in the lower left corner, the MCP tool has been debugged successfully.
+
+   <img alt="Run" src="https://images.tuyacn.com/content-platform/hestia/175522586669f31b0a863.png" width="" >
+
+
+### Add server to agent
+
+1. Go to the [**My Agent**](https://platform.tuya.com/exp/ai) page, click **Develop** in the **Operation** column.
+2. In the section **01 Model Configuration** > **Skills Configuration**, find **MCP Service** and click **+** on the right.
+
+   ![Add MCP](https://images.tuyacn.com/content-platform/hestia/175522598482331e349fe.png)
+
+3. On the **Add MCP service** page, click **Custom MCP Service** and add the desired MCP server to your agent.
+
+   ![Add custom MCP server](https://images.tuyacn.com/content-platform/hestia/17552261567736d8f24ef.png)
+
+So far, you have completed the development and debugging process of a custom MCP server.
